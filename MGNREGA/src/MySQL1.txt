@@ -1,0 +1,127 @@
+mysql> create database projectdb;
+Query OK, 1 row affected (0.33 sec)
+
+mysql> use projectdb;
+Database changed
+mysql> create table BDO(BDOId int,BDOname varchar(20), BDOemail varchar(20), BDOpassword varchar(20));
+Query OK, 0 rows affected (0.97 sec)
+
+mysql> insert into BDO values (1000, 'Sabira','sab@gmail.com','sab');
+Query OK, 1 row affected (0.18 sec)
+
+
+mysql> create table Project(
+    -> proId int PRIMARY KEY,
+    -> proName varchar(40)
+    -> );
+Query OK, 0 rows affected (0.15 sec)
+
+
+mysql> create table WedgesDetail(wId int PRIMARY KEY, NOD int, Wedges int);
+Query OK, 0 rows affected (0.99 sec)
+
+
+mysql> create table Employee(empId int PRIMARY KEY, empName varchar(20), empAddress varchar(20), empW int,FOREIGN KEY(empW) references WedgesDetail(wId));
+Query OK, 0 rows affected (0.32 sec)
+
+mysql> create table GMP(gmpId int PRIMARY KEY, gmpName varchar(20),gmpPassword varchar(20));
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> create table GMPPRO(proAId int, gmpAId int, FOREIGN KEY(proAid) references Project(proId), FOREIGN KEY(gmpAId) references GMP(gmpId));
+Query OK, 0 rows affected (0.65 sec)
+
+
+mysql> create table proAssignToEmp(proAEId int, empAId int,FOREIGN KEY(proAEId) references Project(proid), FOREIGN KEY(empAId) references Employee(empId));
+Query OK, 0 rows affected (0.34 sec)
+
+mysql> show tables;
++---------------------+
+| Tables_in_projectdb |
++---------------------+
+| bdo                 |
+| employee            |
+| gmp                 |
+| gmppro              |
+| proassigntoemp      |
+| project             |
+| wedgesdetail        |
++---------------------+
+7 rows in set (0.13 sec)
+
+mysql>
+mysql> desc bdo;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| BDOId       | int         | YES  |     | NULL    |       |
+| BDOname     | varchar(20) | YES  |     | NULL    |       |
+| BDOemail    | varchar(20) | YES  |     | NULL    |       |
+| BDOpassword | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.01 sec)
+
+mysql> desc project;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| proId   | int         | NO   | PRI | NULL    |       |
+| proName | varchar(40) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+2 rows in set (0.01 sec)
+
+mysql> desc employee;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empId      | int         | NO   | PRI | NULL    |       |
+| empName    | varchar(20) | YES  |     | NULL    |       |
+| empAddress | varchar(20) | YES  |     | NULL    |       |
+| empW       | int         | YES  | MUL | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> desc gmp;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| gmpId       | int         | NO   | PRI | NULL    |       |
+| gmpName     | varchar(20) | YES  |     | NULL    |       |
+| gmpPassword | varchar(20) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> desc gmppro;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| proAId | int  | YES  | MUL | NULL    |       |
+| gmpAId | int  | YES  | MUL | NULL    |       |
++--------+------+------+-----+---------+-------+
+2 rows in set (0.06 sec)
+
+mysql> desc gmppro;proassigntoemp;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| proAId | int  | YES  | MUL | NULL    |       |
+| gmpAId | int  | YES  | MUL | NULL    |       |
++--------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
++---------+------+------+-----+---------+-------+
+| Field   | Type | Null | Key | Default | Extra |
++---------+------+------+-----+---------+-------+
+| proAEId | int  | YES  | MUL | NULL    |       |
+| empAId  | int  | YES  | MUL | NULL    |       |
++---------+------+------+-----+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> desc wedgesdetail;
++--------+------+------+-----+---------+-------+
+| Field  | Type | Null | Key | Default | Extra |
++--------+------+------+-----+---------+-------+
+| wId    | int  | NO   | PRI | NULL    |       |
+| NOD    | int  | YES  |     | NULL    |       |
+| Wedges | int  | YES  |     | NULL    |       |
++--------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
