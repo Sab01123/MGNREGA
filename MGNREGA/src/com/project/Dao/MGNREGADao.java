@@ -13,7 +13,9 @@ public interface MGNREGADao {
 	
 	public  Boolean  GMPlogin(String name, String password);
 	
-	 public String createProject(int proId, String proName);
+	 public String createProject(Project pro);
+	
+
 	 
 	 public List<Project> viewAllProjects();
 	 
@@ -31,6 +33,7 @@ public interface MGNREGADao {
 	 
 	 public String createEmployee(int empId, String empName, String empAddress);
 	 
+	 public List<EmployeeWedeges> empOnpro(String proName);
 	
 	 
 }
