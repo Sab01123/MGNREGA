@@ -8,7 +8,7 @@ public class TotalNOD {
 	private String proName;
 	
 	public TotalNOD() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public TotalNOD(int nOD, int wedges, String empName, String proName) {

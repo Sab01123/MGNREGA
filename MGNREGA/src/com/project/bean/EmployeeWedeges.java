@@ -1,23 +1,24 @@
-package com.project.Dao;
+package com.project.bean;
 
 public class EmployeeWedeges {
 	
 	
 	
 	private int empid;
-	private String empNameString;
-	private String empAddressString;
+	private String empName;
+	private String empAddress;
 	private int wedges;
-	public EmployeeWedeges(int empid, String empNameString, String empAddressString, int wedges) {
-		super();
-		this.empid = empid;
-		this.empNameString = empNameString;
-		this.empAddressString = empAddressString;
-		this.wedges = wedges;
-	}
 	
 	public EmployeeWedeges() {
 		// TODO Auto-generated constructor stub
+	}
+
+	public EmployeeWedeges(int empid, String empName, String empAddress, int wedges) {
+		super();
+		this.empid = empid;
+		this.empName = empName;
+		this.empAddress = empAddress;
+		this.wedges = wedges;
 	}
 
 	public int getEmpid() {
@@ -28,20 +29,20 @@ public class EmployeeWedeges {
 		this.empid = empid;
 	}
 
-	public String getEmpNameString() {
-		return empNameString;
+	public String getEmpName() {
+		return empName;
 	}
 
-	public void setEmpNameString(String empNameString) {
-		this.empNameString = empNameString;
+	public void setEmpName(String empName) {
+		this.empName = empName;
 	}
 
-	public String getEmpAddressString() {
-		return empAddressString;
+	public String getEmpAddress() {
+		return empAddress;
 	}
 
-	public void setEmpAddressString(String empAddressString) {
-		this.empAddressString = empAddressString;
+	public void setEmpAddress(String empAddress) {
+		this.empAddress = empAddress;
 	}
 
 	public int getWedges() {
@@ -54,11 +55,9 @@ public class EmployeeWedeges {
 
 	@Override
 	public String toString() {
-		return "EmployeeWedeges [empid=" + empid + ", empNameString=" + empNameString + ", empAddressString="
-				+ empAddressString + ", wedges=" + wedges + "]";
+		return "EmployeeWedeges [empid=" + empid + ", empName=" + empName + ", empAddress=" + empAddress + ", wedges="
+				+ wedges + "]";
 	}
-	
-	
 	
 	
 	

@@ -1,20 +1,26 @@
 package com.project.UseCases;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.project.Dao.EmployeeWedeges;
 import com.project.Dao.MGNREGADao;
 import com.project.Dao.MGNREGAImpl;
+import com.project.bean.Employee;
+import com.project.bean.EmployeeWedeges;
+import com.project.bean.GMP;
 import com.project.bean.Project;
+import com.project.bean.TOD2;
 
-public class BDOLogin {
+public class ProjectMain {
 
 	public static void main(String[] args) {
 Scanner sc= new Scanner(System.in);
 
-     System.out.println("who are you?");
+System.out.println("Welcome to MGNREGA");
+
+       while(true) {
+System.out.println("You can login as BDO or GPM");
+     System.out.println("Who are you?");
      System.out.println("BDO");
      System.out.println("GPM");
      String admi=sc.next();
@@ -29,27 +35,28 @@ Scanner sc= new Scanner(System.in);
  		System.out.println("Enter Password:");
  		String pass = sc.next();
  		
-// 		StudentDao dao = new StudentDaoImpl();
  	
  		Boolean a1=dao.BDOlogin(uname,pass);
-// 		System.out.println(a1);
  		if(a1==true) {
  			
- 			System.out.println("Login successful...");
+ 			System.out.println("Login as BDO successful...");
+ 			while(true) {
+ 				
+ 			
  			System.out.println("select the operation number"+"\n"+
- 			                   "1 Create a project");
- 			System.out.println("2 View List Of Project.");
- 			System.out.println("3 Create new Gram Panchayat Member(GPM)..");
- 			System.out.println("4 View all the GPM.");
- 			System.out.println("5 Allocate  Project to GPM");
- 			System.out.println("6 See List of Employee working on that Project and their wages.");
+ 			                   "* 1 Create a project");
+ 			System.out.println("* 2 View List Of Project.");
+ 			System.out.println("* 3 Create new Gram Panchayat Member(GPM)..");
+ 			System.out.println("* 4 View all the GPM.");
+ 			System.out.println("* 5 Allocate  Project to GPM");
+ 			System.out.println("* 6 See List of Employee working on that Project and their wages.");
  			
  			int opt = sc.nextInt();
 			if(opt==1) {
-				System.out.println("enter id");
+				System.out.println("enter project id");
  				int proid= sc.nextInt();
  				
- 				System.out.println("enter name");
+ 				System.out.println("enter project name");
  				String proname = sc.next();
  	          
  				String str1 =dao.createProject(new Project(proid, proname));
@@ -63,13 +70,13 @@ Scanner sc= new Scanner(System.in);
 			
 			}
 			else if(opt==3) {
-				  System.out.println("enter gmpid");
+				  System.out.println("enter GMP id");
 	 				  int p2=sc.nextInt();
 	 				  
-	 				  System.out.println("enter gmp name");
+	 				  System.out.println("enter GMP name");
 	 				  String s3= sc.next();
 	 				  
-	 				  System.out.println("enter gmp password");
+	 				  System.out.println("enter GMP password");
 	 				  String s4= sc.next();
 	 				  
 	 				
@@ -77,13 +84,21 @@ Scanner sc= new Scanner(System.in);
 	 				System.out.println(str3);
 			}
 			
-//			----------
+
+			else if(opt==4) {
+				
+				List<GMP> allgmp = 	dao.viewAllGMP();
+				for(GMP i:allgmp) {
+					System.out.println(i);
+				}
+				
+			}
 			
 			else if(opt==5) {
-				System.out.println("pro id and gmp id must match");
+				System.out.println("** Project id and gmp id must match to their respective table **");
 				System.out.println("enter pro id");
 				int a = sc.nextInt();
-				System.out.println("enter gmp id to which u w allo");
+				System.out.println("enter gmp id");
 				int b = sc.nextInt();
 
 			String string =	dao.AllocateProToGMP(a, b);
@@ -91,31 +106,49 @@ Scanner sc= new Scanner(System.in);
 			}
 			
 			else if(opt==6) {
-				System.out.println("Enter name");
+				System.out.println("Enter project name");
+				
 				String cname= sc.next();
+				
 			List<EmployeeWedeges> liemp = dao.empOnpro(cname);
+			System.out.println("Employee Details working on: "+cname);
 				for(EmployeeWedeges i:liemp) {
 					System.out.println(i);
 				}
 			}
-			
+ 			
  			else {
  				System.out.println("not authorized");
  			}
+			System.out.println("   "+"\n"+"-->Do you want to execute any other operations ? Enter Y or N");
+			System.out.println("(if you will select N you will be logout)");
+			String ans = sc.next();
+			if(ans.equalsIgnoreCase("n")) {
+				System.out.println("You are successfully logged out");
+				break;
+			}
  		}
  		}
  		else {
- 			System.out.println("are you new GPM?");
- 			System.out.println("enter y or n");
+ 			System.out.println("Incorrect BDO name or Password");
+ 		}
+ 		
+ 		}
+     
+ 		else if(admi.equalsIgnoreCase("GPM")) {
+ 			System.out.println("Are you a new GPM?");
+ 			System.out.println("Enter Y or N");
+ 			System.out.println("Y: Register as new GPM");
+ 			System.out.println("N: Login as existing GPM");
  			String g=sc.next();
  			if(g.equalsIgnoreCase("y")) {
- 				System.out.println("enter id");
+ 				System.out.println("Enter new id");
  				int gid= sc.nextInt();
  				
- 				System.out.println("enter name");
+ 				System.out.println("Enter name");
  				String gmpname = sc.next();
  				
- 				System.out.println("enter password");
+ 				System.out.println("Enter password");
  				String gmppass = sc.next();
  				
  			String msg1 = 	dao.createGMP(gid,gmpname , gmppass);
@@ -130,7 +163,8 @@ Scanner sc= new Scanner(System.in);
  				
  			 Boolean b1 = dao.GMPlogin(name, pass1);
  			 if(b1==true) {
- 				 System.out.println("Successfully logid as GMP");
+ 				 System.out.println("Successfully login as GPM");
+ 				 while(true) {
  				System.out.println("select the operation number"+"\n"+"1 Create a Employee");
  	 			System.out.println("2 View the Details of Employee.");
  	 			System.out.println("3 Assign Employee to a Project.");
@@ -153,15 +187,54 @@ Scanner sc= new Scanner(System.in);
  	 				System.out.println(str);
  	 				
  	 			}
- 	 			
+ 	 			else if(opt==2) {
+ 	 				List<Employee> li =	dao.viewAllEmployees();
+ 	 				for(Employee i:li) {
+ 	 					System.out.println(i);
+ 	 				}
+ 	 			}
+ 	 			else if(opt==3) {
+ 	 				System.out.println("Pro id and emp id must match their respective table");
+ 					System.out.println("enter project id");
+ 					int a = sc.nextInt();
+ 					System.out.println("enter employee id");
+ 					int b = sc.nextInt();
+
+ 				String string =	dao.AllocateProToEmp(a, b);
+ 				System.out.println(string);
+ 	 			}
+ 	 			else if(opt==4) {
+// 	 				System.out.println("enter project name to view total number of days Employee worked in a project and also their wages.");
+ 	 				System.out.println("enter employee name");
+ 	 				String empname = sc.next();
+ 	 				List<TOD2> li =	dao.viewEmpWorkingonPro(empname);
+ 	 				for(TOD2 i:li) {
+ 	 					System.out.println(i);
+ 	 				}
+ 	 				
+ 	 			}
+ 	 			System.out.println("   "+"\n"+"-->Do you want to execute any other operations ? Enter Y or N");
+ 				System.out.println("(if you will select N you will be logout)");
+ 				String ans = sc.next();
+ 				if(ans.equalsIgnoreCase("n")) {
+ 					System.out.println("You are successfully logged out");
+ 					break;
+ 				}
+ 			 }
+ 				 
  			 }
  			}
  		}
     	 
+     System.out.println("Do you want to Exit Y or N");
+     String exit = sc.next();
+     if(exit.equalsIgnoreCase("y")) {
+    	 System.out.println("Thank you for visting MGNREGA");
+    	 break;
+     }
  		}
-    	 
-    	 
-    	 
+       
+	}
      }
      
 		
