@@ -7,7 +7,7 @@ private String BDOname;
 private String BDOpassword;
 
 public BDO() {
-	// TODO Auto-generated constructor stub
+	
 }
 
 public BDO(String bDOname, String bDOpassword) {
