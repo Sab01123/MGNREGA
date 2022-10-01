@@ -3,8 +3,10 @@ package com.project.Dao;
 import java.util.List;
 
 import com.project.bean.Employee;
+import com.project.bean.EmployeeWedeges;
 import com.project.bean.GMP;
 import com.project.bean.Project;
+import com.project.bean.TOD2;
 import com.project.bean.TotalNOD;
 
 public interface MGNREGADao {
@@ -19,6 +21,8 @@ public interface MGNREGADao {
 	 
 	 public List<Project> viewAllProjects();
 	 
+	 public List<Employee> viewAllEmployees();
+	 
 	 public String createGMP(int gmpId, String gmpName, String gmpPassword);
 	 
 	 public List<GMP> viewAllGMP();
@@ -27,7 +31,8 @@ public interface MGNREGADao {
 	 
 	 public String AllocateProToEmp(int proAEId, int empAId);
 	 
-	 public List<TotalNOD> viewEmpWorkingonPro(String proName);
+//	 public List<TotalNOD> viewEmpWorkingonPro(String proName);
+	 public List<TOD2> viewEmpWorkingonPro(String empName);
 	 
 	 public String createWedges(int wId, int NOD, int wedges);
 	 

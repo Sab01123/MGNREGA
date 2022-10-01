@@ -6,8 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+
+import com.project.bean.Employee;
+import com.project.bean.EmployeeWedeges;
 import com.project.bean.GMP;
 import com.project.bean.Project;
+import com.project.bean.TOD2;
 import com.project.bean.TotalNOD;
 import com.project.utility.DBUtil;
 
@@ -33,14 +38,14 @@ public class MGNREGAImpl implements MGNREGADao{
 			 p= rs.getString("BDOpassword");
 			
 	
-			System.out.println(n);
+//			System.out.println(n);
 		}
 		if(n.equals(name)&&p.equals(password)) {
 			flag = true;
 		}
 				
 		} catch (SQLException e) {
-			System.out.println("hello");
+			System.out.println(e.getMessage());
 		}
 		return flag;
 		
@@ -49,10 +54,34 @@ public class MGNREGAImpl implements MGNREGADao{
 
 	@Override
 	public Boolean GMPlogin(String name, String password) {
-		String msg="not found";
+       Boolean flag = false;
 		
-		// TODO Auto-generated method stub
-		return true;
+		try(Connection conn = DBUtil.provideConnection()) {
+			
+			
+			PreparedStatement ps= conn.prepareStatement("select gmpname,gmppassword from gmp");			
+			
+			ResultSet rs= ps.executeQuery();
+//			int i= 0;
+			String n="";
+			String p="";
+			
+		if(rs.next()) {
+//			 i = rs.getInt("gmpId");
+			 n= rs.getString("gmpName");
+			 p= rs.getString("gmpPassword");
+			
+	
+//			System.out.println(n);
+		}
+		if(n.equals(name)&&p.equals(password)) {
+			flag = true;
+		}
+				
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return flag;
 	}
 
 	@Override
@@ -87,7 +116,8 @@ public class MGNREGAImpl implements MGNREGADao{
 
 	@Override
 	public List<Project> viewAllProjects() {
-List<Project> pro= new ArrayList<>();
+
+		List<Project> pro= new ArrayList<>();
 		
 		
 		try(Connection conn= DBUtil.provideConnection()) {
@@ -155,13 +185,48 @@ List<Project> pro= new ArrayList<>();
 
 	@Override
 	public List<GMP> viewAllGMP() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<GMP> gmpList= new ArrayList<>();
+		
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from gmp");
+			
+			
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				
+				int r= rs.getInt("gmpId");
+				String n= rs.getString("gmpName");
+				String p= rs.getString("gmpPassword");
+				
+				
+				
+			GMP gmp=new GMP(r, n, p);	
+				
+			gmpList.add(gmp);
+
+			}
+				
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());;
+		}
+		
+		
+		if(gmpList.size() == 0)
+			System.out.println("GPM List is empty");
+
+		return gmpList;
 	}
 
 	@Override
 	public String AllocateProToGMP(int proAId, int gmpAId) {
-String message = "Not Inserted..";
+      
+		String message = "Not Inserted..";
 		
 		try(Connection conn= DBUtil.provideConnection()) {
 			
@@ -191,14 +256,71 @@ String message = "Not Inserted..";
 
 	@Override
 	public String AllocateProToEmp(int proAEId, int empAId) {
-		// TODO Auto-generated method stub
-		return null;
+     
+		String message = "Not Inserted..";
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement
+					("insert into ProAssignToEmp(proAEId,empAId) values(?,?)");
+			
+			
+			
+			ps.setInt(1,proAEId);
+			ps.setInt(2,empAId);
+		
+			
+			int x= ps.executeUpdate();
+			
+			
+			if(x > 0)
+				message = "Project assigned to Employee Sucessfully !";
+			
+			
+			
+		} catch (SQLException e) {
+			message = e.getMessage();
+		}
+
+		return message;
 	}
 
 	@Override
-	public List<TotalNOD> viewEmpWorkingonPro(String proName) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<TOD2> viewEmpWorkingonPro(String empName) {
+
+		List<TOD2> list= new ArrayList<>();
+		
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select w.NOD,w.Wedges from wedgesdetail w inner join employee p on w.wid=p.empId and p.empname=?");
+			
+			ps.setString(1,empName);
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				int r= rs.getInt("nOD");
+				int o= rs.getInt("wedges");
+	
+			TOD2 t = new TOD2(r,o);	
+				
+			list.add(t);
+
+			}
+				
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());;
+		}
+		
+		
+		if(list.size() == 0)
+//			System.out.println("No employee found");
+			System.out.println("Either the Employee is not registered or the employee have not allocated any project");
+
+		
+		return list;
 	}
 
 	@Override
@@ -215,9 +337,9 @@ String message = "Not Inserted..";
 		try(Connection conn= DBUtil.provideConnection()) {
 			
 			PreparedStatement ps= conn.prepareStatement
-					("insert into employee(empId,empName,empAddress,empW) values(?,?,?)");
+					("insert into employee(empId,empName,empAddress) values(?,?,?)");
 			
-			
+			//???????????/
 			
 			ps.setInt(1,empId);
 			ps.setString(2,empName);
@@ -248,14 +370,11 @@ String message = "Not Inserted..";
 try(Connection conn= DBUtil.provideConnection()) {
 			
 			PreparedStatement ps= conn.prepareStatement
-					("select s.empId, s.empName,s.empAddress,k.wedges"
-							+ "from  employee s INNER JOIN project c INNER JOIN proAssignToEmp cs  Inner Join wedgesdetail k"
-							+ "ON s.empId = cs.empAId AND c.proID = cs.proAId AND s.empid=k.wid AND c.cname= ?");
+					("select s.empId, s.empName,s.empAddress,k.wedges from  employee s INNER JOIN project c INNER JOIN proAssignToEmp cs  Inner Join wedgesdetail k ON s.empId = cs.empAId AND c.proID = cs.proAEId AND s.empid=k.wid And c.proname= ?");
 			
-			
-//			ps.setString(1, student.getName());
 			ps.setString(1,proName);
-	ResultSet rs= ps.executeQuery();
+			
+      	ResultSet rs= ps.executeQuery();
 			
 			while(rs.next()) {
 				
@@ -283,6 +402,46 @@ try(Connection conn= DBUtil.provideConnection()) {
 
 		return pro;
 	
+	}
+
+	@Override
+	public List<Employee> viewAllEmployees() {
+
+		List<Employee> emplist= new ArrayList<>();
+		
+		
+		try(Connection conn= DBUtil.provideConnection()) {
+			
+			PreparedStatement ps= conn.prepareStatement("select * from employee");
+			
+			
+			
+			ResultSet rs= ps.executeQuery();
+			
+			while(rs.next()) {
+				
+				
+				int r= rs.getInt("empId");
+				String n= rs.getString("empName");
+				String a= rs.getString("empAddress");
+				
+				
+				
+			Employee emp=new Employee(r, n, a);	
+				
+			emplist.add(emp);
+
+			}
+				
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());;
+		}
+		
+		
+		if(emplist.size() == 0)
+			System.out.println("zero projects");
+
+		return emplist;
 	}
 
 }
