@@ -34,7 +34,7 @@ public interface MGNREGADao {
 //	 public List<TotalNOD> viewEmpWorkingonPro(String proName);
 	 public List<TOD2> viewEmpWorkingonPro(String empName);
 	 
-	 public String createWedges(int wId, int NOD, int wedges);
+//	 public String createWedges(int wId, int NOD, int wedges);
 	 
 	 public String createEmployee(int empId, String empName, String empAddress);
 	 

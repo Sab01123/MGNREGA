@@ -62,12 +62,10 @@ public class MGNREGAImpl implements MGNREGADao{
 			PreparedStatement ps= conn.prepareStatement("select gmpname,gmppassword from gmp");			
 			
 			ResultSet rs= ps.executeQuery();
-//			int i= 0;
 			String n="";
 			String p="";
 			
 		if(rs.next()) {
-//			 i = rs.getInt("gmpId");
 			 n= rs.getString("gmpName");
 			 p= rs.getString("gmpPassword");
 			
@@ -94,7 +92,6 @@ public class MGNREGAImpl implements MGNREGADao{
 					("insert into project(proId,proName) values(?,?)");
 			
 			
-//			ps.setString(1, student.getName());
 			ps.setInt(1,pro.getProId());
 			ps.setString(2,pro.getProName());
 			
@@ -323,11 +320,7 @@ public class MGNREGAImpl implements MGNREGADao{
 		return list;
 	}
 
-	@Override
-	public String createWedges(int wId, int NOD, int wedges) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public String createEmployee(int empId, String empName, String empAddress) {
@@ -339,7 +332,6 @@ public class MGNREGAImpl implements MGNREGADao{
 			PreparedStatement ps= conn.prepareStatement
 					("insert into employee(empId,empName,empAddress) values(?,?,?)");
 			
-			//???????????/
 			
 			ps.setInt(1,empId);
 			ps.setString(2,empName);
